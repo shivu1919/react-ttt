@@ -2,8 +2,15 @@ import React, { useState } from 'react'
 import './App.css'
 
 function App() {
+  
+  let flag = 1;
+  const[count, setCount] = useState(1)
 
-  const win =[
+function Checkwin(){
+
+ 
+
+  const winCombo =[
     [0,1,2],   
     [3,4,5],
     [6,7,8],
@@ -13,55 +20,63 @@ function App() {
     [0,4,8],
     [2,4,6]    
   ]
+    let c =[];
 
-function Checkwin(){
-    let c0 = document.getElementById('cell0').innerHTML
-    let c1 = document.getElementById('cell1').innerHTML
-    let c2 = document.getElementById('cell2').innerHTML
-    let c3 = document.getElementById('cell3').innerHTML
-    let c4 = document.getElementById('cell4').innerHTML
-    let c5 = document.getElementById('cell5').innerHTML
-    let c6 = document.getElementById('cell6').innerHTML
-    let c7 = document.getElementById('cell7').innerHTML
-    let c8 = document.getElementById('cell8').innerHTML
-    
-    if((c0==player  && c1==player  && c2 == player)||
-        (c3==player && c4==player && c5 == player)||
-        (c6==player && c7==player && c8 == player)||
-        (c0==player && c4==player && c8 == player)||
-        (c0==player && c3==player && c6 == player)||
-        (c1==player && c4==player && c7 == player)||
-        (c2==player && c5==player && c8 == player)||
-        (c2==player && c4==player && c6 == player)){
-      
-          document.getElementById('result').innerHTML = player +" is the winner"
+
+    for(let i=0; i<=8;i++){
+      c.push(document.getElementById(`cell${i}`).innerHTML)
     }
+
+    for(let x of winCombo){
+      if(x.every(index => c[index]===player)){
+        document.getElementById('result').innerHTML=player + " is winner"
+        flag=0
+        console.log(flag)
+      }
+    }
+    
+
+    
   }
 
   const[player, setPlayer] = useState('O')
 
-  function Add(index,value){
-    if(player=='X'){
-      value=player
-      document.getElementById(index).innerHTML=player
-      Checkwin()
-      setPlayer('O')
+  function Add(index){
+
+    if(flag===1){
+      if((document.getElementById(index).innerHTML==="")){
+        if(player=='X'){
+          document.getElementById(index).innerHTML=player
+          Checkwin()
+          setPlayer('O')
+        }
+        else{
+          document.getElementById(index).innerHTML=player
+          setCount(count+1)
+          console.log(count)
+          Checkwin()
+          setPlayer('X')
+        }
+      }
+      else{
+        alert('Not allowed')
+      }
     }
-    else{
-      document.getElementById(index).innerHTML=player
-      Checkwin()
-      setPlayer('X')
-    }
-    
+
+     
     
   }
   
 
   return (
-    <div className="main">
+
+    <>
+      <div className="main">
       <h1>Tic Tac Toe</h1>
         <div className="board">
           
+          {/*This is a comment */}
+
             <div className="cell" id="cell0" onClick={()=>{Add('cell0','c0')}}></div>
 
             <div className="cell" id="cell1" onClick={()=>{Add('cell1')}}></div>
@@ -77,6 +92,8 @@ function Checkwin(){
         <button onClick={()=>{window.location="/"}}>Restart</button>
         <h1 id="result"></h1>
     </div>
+    </>
+    
   )
 }
 export default App
