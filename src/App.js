@@ -3,13 +3,11 @@ import './App.css'
 
 function App() {
   
-  let flag = 1;
-  const[count, setCount] = useState(1)
+  const[flag, setFlag] = useState(true)
+
+  const[count, setCount] = useState(0)
 
 function Checkwin(){
-
- 
-
   const winCombo =[
     [0,1,2],   
     [3,4,5],
@@ -30,8 +28,13 @@ function Checkwin(){
     for(let x of winCombo){
       if(x.every(index => c[index]===player)){
         document.getElementById('result').innerHTML=player + " is winner"
-        flag=0
+        document.getElementById('turn').innerHTML="";
+        setFlag(false)
         console.log(flag)
+      }
+      else if(count==8){
+          document.getElementById('result').innerHTML="Game is drawn"
+          document.getElementById('turn').innerHTML="";
       }
     }
     
@@ -43,24 +46,27 @@ function Checkwin(){
 
   function Add(index){
 
-    if(flag===1){
+    if(flag){
       if((document.getElementById(index).innerHTML==="")){
         if(player=='X'){
           document.getElementById(index).innerHTML=player
+          setCount(count+1)
           Checkwin()
           setPlayer('O')
         }
         else{
           document.getElementById(index).innerHTML=player
           setCount(count+1)
-          console.log(count)
           Checkwin()
           setPlayer('X')
         }
       }
       else{
-        alert('Not allowed')
+        alert('Double Click on any cell is not allowed')
       }
+    }
+    else{
+      alert("Gave is already Over. Try restarting the game")
     }
 
      
@@ -88,7 +94,8 @@ function Checkwin(){
             <div className="cell" id="cell7" onClick={()=>{Add('cell7')}}></div>
             <div className="cell" id="cell8" onClick={()=>{Add('cell8')}}></div>
         </div>
-        <h1>Player {player}'s turn</h1>
+        
+        <h1 id='turn'>Player {player}'s turn</h1>
         <button onClick={()=>{window.location="/"}}>Restart</button>
         <h1 id="result"></h1>
     </div>
